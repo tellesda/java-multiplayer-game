@@ -1,0 +1,13 @@
+n renderingTest
+l -0.79 0.0 -2.36 255 255 255 0.1
+v 0.0 0.0 0.0 0.0 0.0 0.0 1.0 1.0 1.0
+s 39 52 82 255
+m res/computers/3d/meshes/cube.obj 0.0 0.0 5.0 0.0 0.0 0.0 1.0 1.0 1.0 0 0 255
+m res/computers/3d/meshes/cube.obj 5.0 0.0 5.0 0.0 0.0 0.0 1.0 1.0 1.0 255 0 0
+m res/computers/3d/meshes/cube.obj -5.0 0.0 5.0 0.0 0.0 0.0 1.0 1.0 1.0 0 255 0
+m res/computers/3d/meshes/cube.obj 0.0 3.0 5.0 0.0 0.0 0.0 1.0 1.0 1.0 0 0 100
+m res/computers/3d/meshes/cube.obj 5.0 3.0 5.0 0.0 0.0 0.0 1.0 1.0 1.0 100 0 0
+m res/computers/3d/meshes/cube.obj -5.0 3.0 5.0 0.0 0.0 0.0 1.0 1.0 1.0 0 100 0
+m res/computers/3d/meshes/cube.obj 0.0 -3.0 5.0 0.0 0.0 0.0 1.0 1.0 1.0 0 0 0
+m res/computers/3d/meshes/cube.obj 5.0 -3.0 5.0 0.0 0.0 0.0 1.0 1.0 1.0 50 50 50
+m res/computers/3d/meshes/cube.obj -5.0 -3.0 5.0 0.0 0.0 0.0 1.0 1.0 1.0 100 100 100

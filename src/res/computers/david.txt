@@ -1,0 +1,11 @@
+f emptyFolder anotherEmptyFolder
+s gamesFolder snake.exe
+w gamesFolder 3dEnvironnment monkey.txt
+w gamesFolder 3dEnvironnment cubes.txt
+w gamesFolder 3dEnvironnment terrain.txt
+t gamesFolder 3dEnvironnment 3dNote.txt
+i images martin.png
+i images dingo.png
+i images olivius.png
+t images MARTIN.txt
+t chungusLyrics.txt
