@@ -91,7 +91,7 @@ public class Engine implements Runnable {
         }
         else{
             World world = new World(this);
-            this.gameServer = new GameServer(world, 4);
+            this.gameServer = new GameServer(world, 4, "myServer");
             setCurrentScene(world);
         }
     }

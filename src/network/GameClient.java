@@ -35,6 +35,7 @@ public class GameClient extends Listener {
         client.getKryo().register(PlayerMovementPacket.class);
         client.getKryo().register(OtherPlayerPacket.class);
         client.getKryo().register(DoorPacket.class);
+        client.getKryo().register(GameStatePacket.class);
     }
 
     public World getWorld() {
@@ -91,14 +92,10 @@ public class GameClient extends Listener {
         client.sendTCP(packet);
     }
 
-    public void syncWithServer(ServerInfoPacket packet){
-        this.id = packet.playerID; //TODO remove level from serverInfoPacket, in the future, add name,... and rename function
-
-        //Sync level
+    public void identifyServer(ServerInfoPacket packet){
+        this.id = packet.playerID;
         engine.setCurrentScene(new World(engine));
-        if(packet.currentLevel != world.getLevel().getCurrentLevel()){
-            world.loadLevel(packet.currentLevel);
-        }
+        world.getRequestHandler().syncWithServer(packet.gameStatePacket);
     }
 
     public String loadName(){

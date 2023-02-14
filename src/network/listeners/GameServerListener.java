@@ -35,8 +35,9 @@ public class GameServerListener extends Listener {
         System.out.println(server.getPendingConnections().size() + " connection(s) pending...");
 
         ServerInfoPacket packet = new ServerInfoPacket();
-        packet.currentLevel = (byte)server.getWorld().getLevel().getCurrentLevel();
         packet.playerID = server.getAvailableId();
+        packet.serverName = server.getServerName();
+        packet.gameStatePacket = server.getWorld().getRequestHandler().getGameState();
         c.sendTCP(packet);
     }
 

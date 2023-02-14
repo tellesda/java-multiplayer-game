@@ -23,7 +23,7 @@ public class GameClientListener extends Listener {
 
             if(p instanceof ServerInfoPacket packet){
                 client.identifyPlayer(c);
-                client.syncWithServer(packet);
+                client.identifyServer(packet);
                 return;
             }
             client.getWorld().getRequestHandler().processPacket((Packet) p);

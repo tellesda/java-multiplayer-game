@@ -91,4 +91,49 @@ public class RequestHandler {
         world.getCommandLine().printCommandLine(packet.message, messageColor);
     }
 
+
+    //Exclusive to server
+    public void syncClient(GameConnection gc){
+
+        if(!world.getParentEngine().isServer)
+            return;
+
+        //Sync doors
+        for(var door : world.getLevel().getDoors()){
+            DoorPacket packet = new DoorPacket();
+            packet.doorCode = (byte)door.getCode();
+            packet.open = door.isOpen();
+            gc.c.sendTCP(packet);
+        }
+
+        //Sync OtherPlayers
+        for(var otherPlayer : world.getOtherPlayers()){
+            OtherPlayerPacket packet = new OtherPlayerPacket();
+            packet.isAdding = true;
+            packet.id = (byte)otherPlayer.id;
+            packet.name = otherPlayer.name;
+            gc.c.sendTCP(packet);
+        }
+    }
+
+    public GameStatePacket getGameState(){
+        GameStatePacket packet = new GameStatePacket();
+        packet.level = (byte)world.getLevel().getCurrentLevel();
+
+        return  packet;
+    }
+
+
+    //Exclusive to client
+    public void syncWithServer(GameStatePacket packet){
+
+        if(world.getParentEngine().isServer)
+            return;
+
+        //Sync level
+        if(packet.level != world.getLevel().getCurrentLevel()){
+            world.loadLevel(packet.level);
+        }
+    }
+
 }

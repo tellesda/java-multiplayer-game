@@ -17,15 +17,17 @@ public class GameServer {
     private Server server;
     private GameServerListener serverListener;
 
+    private String serverName;
     private int maxPlayers;
     private List<GameConnection> pendingConnections;
     private List<GameConnection> gameConnections;
 
-    public GameServer(World game, int maxPlayers){
+    public GameServer(World game, int maxPlayers, String serverName){
         if(game == null)
             return;
 
         this.maxPlayers = maxPlayers;
+        this.serverName = serverName;
 
         this.gameConnections = new ArrayList<>();
         this.pendingConnections = new ArrayList<>();
@@ -40,6 +42,7 @@ public class GameServer {
         server.getKryo().register(PlayerMovementPacket.class);
         server.getKryo().register(OtherPlayerPacket.class);
         server.getKryo().register(DoorPacket.class);
+        server.getKryo().register(GameStatePacket.class);
 
         startServer();
     }
@@ -52,6 +55,9 @@ public class GameServer {
     }
     public int getMaxPlayers() {
         return maxPlayers;
+    }
+    public String getServerName() {
+        return serverName;
     }
     public List<GameConnection> getGameConnections() {
         return gameConnections;
@@ -139,32 +145,12 @@ public class GameServer {
         playerInfo.isAdding = true;
         world.addOtherPlayer(playerInfo);
         sendPacket(playerInfo); //Request all existing players to add the new player
-        syncPlayer(gc); //Request the new player to sync with the server
+        world.getRequestHandler().syncClient(gc); //Request the new player to sync with the server
 
         MessagePacket packet = new MessagePacket();
         packet.message = gc.name + " (ID: " + gc.id + ")" + " has joined the game!";
         packet.isOrange = true;
         sendPacket(packet);
-    }
-
-    public void syncPlayer(GameConnection gc){
-
-        //Sync doors
-        for(var door : world.getLevel().getDoors()){
-            DoorPacket packet = new DoorPacket();
-            packet.doorCode = (byte)door.getCode();
-            packet.open = door.isOpen();
-            gc.c.sendTCP(packet);
-        }
-
-        //Sync OtherPlayers
-        for(var otherPlayer : world.getOtherPlayers()){
-            OtherPlayerPacket packet = new OtherPlayerPacket();
-            packet.isAdding = true;
-            packet.id = (byte)otherPlayer.id;
-            packet.name = otherPlayer.name;
-            gc.c.sendTCP(packet);
-        }
     }
 
 
