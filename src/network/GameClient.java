@@ -95,7 +95,6 @@ public class GameClient extends Listener {
     public void identifyServer(ServerInfoPacket packet){
         this.id = packet.playerID;
         engine.setCurrentScene(new World(engine));
-        world.getRequestHandler().syncWithServer(packet.gameStatePacket);
     }
 
     public String loadName(){

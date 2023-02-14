@@ -37,7 +37,6 @@ public class GameServerListener extends Listener {
         ServerInfoPacket packet = new ServerInfoPacket();
         packet.playerID = server.getAvailableId();
         packet.serverName = server.getServerName();
-        packet.gameStatePacket = server.getWorld().getRequestHandler().getGameState();
         c.sendTCP(packet);
     }
 
