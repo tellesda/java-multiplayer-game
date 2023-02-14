@@ -178,7 +178,7 @@ public class Engine implements Runnable {
 
     }
 
-    public synchronized void start(){
+    public void start(){
         if(running)
             return;
         running = true;
@@ -186,7 +186,7 @@ public class Engine implements Runnable {
         thread.start();
     }
 
-    public synchronized void stop(){
+    public void stop(){
         if(!running)
             return;
         running = false;

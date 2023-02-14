@@ -99,16 +99,13 @@ public class GameServer {
     public void validateConnection(PlayerInfoPacket packet, Connection c){
         GameConnection gc = null;
 
-        System.out.println("Validating connection...");
         for(var pendingConnection : pendingConnections){
             if(pendingConnection.adress.equals(c.getRemoteAddressTCP().getHostString())){
-                System.out.println("Connection found among the pending connections!");
                 gc = pendingConnection;
             }
         }
 
         if(gc == null){
-            System.out.println("Connection refused: Connection not found among the pending connections.");
             return;
         }
 
@@ -149,6 +146,7 @@ public class GameServer {
 
         MessagePacket packet = new MessagePacket();
         packet.message = gc.name + " (ID: " + gc.id + ")" + " has joined the game!";
+        System.out.println(packet.message);
         packet.isOrange = true;
         sendPacket(packet);
     }
@@ -182,16 +180,12 @@ public class GameServer {
 
     public void removeOtherPlayer(int id){
         world.removeOtherPlayer(id);
-        System.out.println(world.getOtherPlayers().size());
         OtherPlayerPacket packet = new OtherPlayerPacket();
         packet.id = (byte)id;
         packet.isAdding = false;
-        for(var gameConnection : gameConnections){
-            gameConnection.c.sendTCP(packet);
-        }
+        sendPacket(packet);
     }
 
-    //Utility functions
 
     public byte getAvailableId(){
         boolean[] takenIDs = new boolean[128];

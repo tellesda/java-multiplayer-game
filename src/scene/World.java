@@ -129,7 +129,6 @@ public class World implements Scene{
         npcs.add(new TestNPC(new Vector2D(spawnX+2, spawnY-4), this));
 
         initSortableObjects();
-        System.out.println("Loaded level " + levelIndex);
         level.isLoading = false;
     }
 

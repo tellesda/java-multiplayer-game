@@ -57,8 +57,8 @@ public class GameClient extends Listener {
                 this.clientListener = listener;
                 client.addListener(listener);
             }
-        } catch (IOException e) {
-            System.out.println("Error while connecting to server.");
+        } catch (IOException ignored) {
+
         }
     }
 

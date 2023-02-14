@@ -32,7 +32,6 @@ public class GameServerListener extends Listener {
         GameConnection gc = new GameConnection(c);
         gc.adress = c.getRemoteAddressTCP().getHostString();
         server.getPendingConnections().add(gc);
-        System.out.println(server.getPendingConnections().size() + " connection(s) pending...");
 
         ServerInfoPacket packet = new ServerInfoPacket();
         packet.playerID = server.getAvailableId();
@@ -71,6 +70,7 @@ public class GameServerListener extends Listener {
 
         MessagePacket packet = new MessagePacket();
         packet.message = disconnectedPlayer.name + " has left the game.";
+        System.out.println(packet.message);
         packet.isOrange = true;
         server.sendPacket(packet);
     }
