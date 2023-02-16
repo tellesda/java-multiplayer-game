@@ -2,6 +2,7 @@ package ui;
 
 import anim.Assets;
 import engine.Engine;
+import network.ConnectionAttempt;
 
 import java.awt.Graphics;
 import java.awt.Color;
@@ -33,6 +34,7 @@ public class ServerSlot extends UIElement{
         this.ipArea = new TextArea(false, 1,15,posX+110,posY+(scaleY/2)-60, 200, 50,
                 parentEngine, "127.0.0.1", "Type an ip address...");
         loadServerList();
+        checkServerStatus();
     }
 
     public Engine getParentEngine() {
@@ -82,6 +84,17 @@ public class ServerSlot extends UIElement{
             server.updateY(newPosY);
         }
         saveServerList();
+    }
+
+    public void checkServerStatus(){
+        //for all servers ->
+        //Set icon to 'checking'
+        //create a connection thread
+        for(var server : servers){
+            server.getConnectButton().setText("Checking...");
+            Thread th = new Thread(new ConnectionAttempt(server));
+            th.start();
+        }
     }
 
     @Override

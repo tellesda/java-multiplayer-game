@@ -25,6 +25,10 @@ public class ServerInfoUI extends UIElement{
         return serverIp;
     }
 
+    public Button getConnectButton() {
+        return connectButton;
+    }
+
     public void updateY(int posY){
         this.posY = posY;
         connectButton.posY = posY;

@@ -16,6 +16,7 @@ public class GameServerListener extends Listener {
 
     //Runs when a connection is received
     public void connected(Connection c){
+
         if(server.isServerFull()){
             System.out.println("Max number of players reached");
             c.close();
