@@ -1,6 +1,8 @@
 package scene;
 
+import debug.DebugPoint;
 import engine.Engine;
+import math.LineTrace;
 import math.Vector2D;
 import network.CommandLine;
 import network.RequestHandler;
@@ -27,6 +29,7 @@ public class World implements Scene{
     private List<Npc> npcs;
     private final List<OtherPlayer> otherPlayers;
     private List<Sortable> sortableObjects;
+    private List<DebugPoint> debugPoints;
 
     public World(Engine engine){
         this.parentEngine = engine;
@@ -52,6 +55,9 @@ public class World implements Scene{
     }
     public List<Sortable> getSortableObjects() {
         return sortableObjects;
+    }
+    public List<DebugPoint> getDebugPoints() {
+        return debugPoints;
     }
     public RequestHandler getRequestHandler() {
         return requestHandler;
@@ -111,6 +117,7 @@ public class World implements Scene{
     public void loadLevel(int levelIndex){
         level.isLoading = true;
         npcs = new ArrayList<>();
+        debugPoints = new ArrayList<>();
 
         if(levelIndex == 0)
             level.loadBlankWorld();
@@ -169,6 +176,8 @@ public class World implements Scene{
 
         for(var otherPlayer : otherPlayers)
             otherPlayer.tick();
+
+        debugPoints.removeIf(debugPoint -> debugPoint.frames > debugPoint.maxFrames);
     }
 
     public void render(Graphics g) {
@@ -190,8 +199,10 @@ public class World implements Scene{
         int endY = camera.getBottomTileIndex();
 
         for(int m = startY; m<endY; m++)
-            for(int n = startX; n<endX; n++)
-                level.getTileGrid()[m][n].render(g, width, height, this);
+            for(int n = startX; n<endX; n++){
+                Block tile = level.getTileGrid()[m][n];
+                tile.render(g, width, height, this);
+            }
 
 
         List<Sortable> sortableToRender = new ArrayList<>();
@@ -209,12 +220,16 @@ public class World implements Scene{
 
         sortableToRender.sort(Comparator.comparing(Sortable::getY));
 
-        for(var sortable : sortableToRender)
+        for(var sortable : sortableToRender) {
             sortable.render(g, width, height, this);
+        }
 
         if(player.getUiScene() != null){
             player.getUiScene().render(g);
         }
+
+        for(var debugPoint : debugPoints)
+            debugPoint.render(g, width, height, this);
 
         commandLine.render(g);
     }

@@ -49,6 +49,7 @@ public abstract class Npc extends Human {
 
     @Override
     public void tick(){
+        timer.tick();
         updateAnimation();
         currentAnimation.tick();
 

@@ -34,12 +34,8 @@ public class OtherPlayer extends Human{
         int resultHeight = (int)(64*scale.getY()*cameraScaling);
 
         //Update lit texture half the frames
-        if(updateLight){
+        if(timer.ticking)
             updateTextureLit(world.getLevel().getShadowMap());
-            updateLight = false;
-        }
-        else
-            updateLight = true;
 
         g.drawImage(textureLit, (int)sized.getX(), (int)sized.getY(), resultWidth, resultHeight, null);
         String label = name + "(ID: " + id + ")";

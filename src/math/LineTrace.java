@@ -1,24 +1,53 @@
 package math;
 
-import object.Entity;
-
-import java.util.List;
+import object.Block;
 
 public class LineTrace {
 
-    public static final int precision = 10;
 
-    public static boolean canSee(Vector2D start, Vector2D end, List<Entity> entities){
-        float stepY = (end.y - start.y)/precision;
-        float stepX = (end.x - start.x)/precision;
+    public static boolean canSee(Vector2D start, Vector2D target, Block current, Block[][] tiles, boolean[][] visited, int mapY, int mapX){
 
-        for(int i=0; i<precision; i++){
-            Vector2D checkPosition = Vector2D.add(start, new Vector2D(stepX*i, stepY*i));
-            for(var entity : entities){
-                if(entity.getCollision() == null)
+        if(Vector2D.fastDistance(current.getLocation(), target) <= 1)
+            return true;
+
+        visited[current.m][current.n] = true;
+
+        int startM;
+        int startN;
+        int endM = Math.min(current.m+2, mapY);
+        int endN = Math.min(current.n+2, mapX);
+
+        Vector2D relativeDirection = Vector2D.sub(target, current.getLocation());
+
+        if(relativeDirection.getY() > 1)
+            startM = current.m;
+        else
+            startM = Math.max(current.m-1, 0);
+
+        if(relativeDirection.getX() > 1)
+            startN = current.n;
+        else
+            startN = Math.max(current.n-1, 0);
+
+        for(int m=startM; m<endM; m++){
+            for(int n=startN; n<endN; n++){
+
+                if(visited[m][n])
                     continue;
-                if(entity.getCollision().isPointInside(checkPosition))
-                    return false;
+
+                visited[m][n] = true;
+
+                Block next = tiles[m][n];
+
+                if(next.getCollision().intersectsLine(
+                        start.getX(), start.getY(),
+                        target.getX(), target.getY(), -0.0001f))
+                {
+                    if(next.hasCollision())
+                        return false;
+
+                    return canSee(start, target, next, tiles, visited, mapY, mapX);
+                }
             }
         }
         return true;

@@ -1,5 +1,7 @@
 package object;
 
+import debug.DebugPoint;
+import debug.Timer;
 import input.KeyManager;
 import input.MouseManager;
 import math.Vector2D;
@@ -7,6 +9,8 @@ import object.interactive.Interactive;
 import scene.MainMenu;
 import scene.Scene;
 import scene.World;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -155,6 +159,11 @@ public class Player extends Human{
                 }
                 Block nearest = world.getLevel().getNearestBlock(clickLocation, 3, true);
                 if(nearest != null){
+                    //...
+                    Vector2D[] testPoints = nearest.getCollision().getVisibleEdges(getFeetLocation());
+                    for(var testPoint : testPoints){
+                        world.getDebugPoints().add(new DebugPoint(0.1f, 1, testPoint, Color.red, world));
+                    }
                     //...
                 }
             }

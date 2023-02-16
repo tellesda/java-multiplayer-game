@@ -232,6 +232,8 @@ public class Level {
                 int rowSize = row.length;
                 for(int i=0; i<rowSize; i++){
                     Block block = new Block(new Vector2D(i, column), Integer.parseInt(row[i])-1);
+                    block.n = i;
+                    block.m = column;
                     tileGrid[column][i] = block;
                     litObjects.add(block);
                 }

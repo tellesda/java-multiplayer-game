@@ -2,6 +2,7 @@ package object;
 
 import anim.Animation;
 import anim.Assets;
+import debug.Timer;
 import math.Vector2D;
 import rendering.ShadowMap;
 import rendering.TextureModifier;
@@ -19,8 +20,8 @@ public abstract class Human extends Entity implements Sortable{
     protected  BufferedImage textureLit;
     protected byte animationIndex;
     protected final float moveSpeed;
-    boolean updateLight;
     protected String lookDirection = "DOWN";
+    protected final Timer timer;
 
     public Human(Vector2D location, World world, String type){
         super(location, new Vector2D(1f, 2f), new CollisionBounds(-0.5f,0.5f,-1f,1f, location));
@@ -39,6 +40,7 @@ public abstract class Human extends Entity implements Sortable{
         }
         this.currentAnimation = animIDLE;
         this.world = world;
+        this.timer = new Timer(0.01f, world);
 
     }
 
@@ -106,6 +108,7 @@ public abstract class Human extends Entity implements Sortable{
 
     public void tick(){
         super.tick();
+        timer.tick();
         updateAnimation();
         currentAnimation.tick();
     }
@@ -123,13 +126,8 @@ public abstract class Human extends Entity implements Sortable{
         int resultWidth = (int)(64*scale.getX()*cameraScaling);
         int resultHeight = (int)(64*scale.getY()*cameraScaling);
 
-        //Update lit texture half the frames
-        if(updateLight){
+        if(timer.ticking)
             updateTextureLit(world.getLevel().getShadowMap());
-            updateLight = false;
-        }
-        else
-            updateLight = true;
 
         g.drawImage(textureLit, (int)sized.getX(), (int)sized.getY(), resultWidth, resultHeight, null);
     }
