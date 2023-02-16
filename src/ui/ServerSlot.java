@@ -20,7 +20,7 @@ public class ServerSlot extends UIElement{
     private final Engine parentEngine;
     private final int numberOfSlots = 4;
     private final int padding = 60;
-    private List<ServerInfo> servers;
+    private List<ServerInfoUI> servers;
 
     private final Button addButton;
     private final TextArea ipArea;
@@ -30,7 +30,7 @@ public class ServerSlot extends UIElement{
         this.parentEngine = parentEngine;
         this.servers = new ArrayList<>(numberOfSlots);
         this.addButton = new Button("Add server", null, posX-110, posY+(scaleY/2)-60, 200, 50, parentEngine);
-        this.ipArea = new TextArea(0,15,posX+110,posY+(scaleY/2)-60, 200, 50,
+        this.ipArea = new TextArea(false, 1,15,posX+110,posY+(scaleY/2)-60, 200, 50,
                 parentEngine, "127.0.0.1", "Type an ip address...");
         loadServerList();
     }
@@ -70,14 +70,14 @@ public class ServerSlot extends UIElement{
         if(servers.size()==numberOfSlots)
             return;
         int resultY = posY+((servers.size()-(numberOfSlots/2))*padding);
-        servers.add(new ServerInfo(ip, posX, resultY, (int)(scaleX*0.9f), 50, parentEngine, this));
+        servers.add(new ServerInfoUI(ip, posX, resultY, (int)(scaleX*0.9f), 50, parentEngine, this));
         saveServerList();
     }
 
-    public void removeServer(ServerInfo serverInfo){
+    public void removeServer(ServerInfoUI serverInfo){
         servers.remove(serverInfo);
         for(int i=0; i<servers.size(); i++){
-            ServerInfo server = servers.get(i);
+            ServerInfoUI server = servers.get(i);
             int newPosY = posY+((i-(numberOfSlots/2))*padding);
             server.updateY(newPosY);
         }
@@ -106,7 +106,7 @@ public class ServerSlot extends UIElement{
         int resultY = posY-(scaleY/2);
         g.setColor(Color.GRAY);
         g.fillRoundRect(resultX,resultY,scaleX,scaleY, 10, 10);
-        for (ServerInfo server : servers) {
+        for (ServerInfoUI server : servers) {
             server.render(g);
         }
         addButton.render(g);

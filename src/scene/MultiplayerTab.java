@@ -64,11 +64,7 @@ public class MultiplayerTab implements Scene{
             parentEngine.setCurrentScene(new MainMenu(parentEngine));
         }
         if(hostGameButton.isClicked()){
-            if(parentEngine.hostedServer == null){
-                parentEngine.hostedServer = new Engine(800,600,60,true);
-                parentEngine.hostedServer.start();
-                isAttemptingConnection = true;
-            }
+            parentEngine.setCurrentScene(new HostServerTab(parentEngine));
         }
     }
 

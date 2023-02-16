@@ -42,7 +42,7 @@ public class CustomizationTab implements Scene{
         int downLeftX = 50;
         int downLeftY = parentEngine.height-50;
 
-        nameArea = new TextArea(2, 12, centerX, 100, 200, 50,
+        nameArea = new TextArea(false, 2, 12, centerX, 100, 200, 50,
                 parentEngine, parentEngine.gameClient.loadName(), "Type a username...");
 
         menuButton = new Button(null, Assets.backButton, downLeftX, downLeftY, 50, 50, parentEngine);

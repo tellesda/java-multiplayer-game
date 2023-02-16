@@ -22,12 +22,12 @@ public class GameServer {
     private List<GameConnection> pendingConnections;
     private List<GameConnection> gameConnections;
 
-    public GameServer(World game, int maxPlayers, String serverName){
+    public GameServer(World game, ServerInfo serverInfo){
         if(game == null)
             return;
 
-        this.maxPlayers = maxPlayers;
-        this.serverName = serverName;
+        this.maxPlayers = serverInfo.maxPlayers;
+        this.serverName = serverInfo.serverName;
 
         this.gameConnections = new ArrayList<>();
         this.pendingConnections = new ArrayList<>();
@@ -82,6 +82,8 @@ public class GameServer {
                 this.serverListener = listener;
             }
             System.out.println("Server is operational");
+            System.out.println("name: " + serverName);
+            System.out.println("max players: " + maxPlayers);
 
 
         } catch (IOException e) {

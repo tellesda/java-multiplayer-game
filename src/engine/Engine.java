@@ -5,6 +5,7 @@ import input.KeyManager;
 import input.MouseManager;
 import network.GameClient;
 import network.GameServer;
+import network.ServerInfo;
 import scene.*;
 
 import java.awt.Graphics;
@@ -14,6 +15,7 @@ public class Engine implements Runnable {
 
     //Attributes
     public Engine hostedServer;
+    public ServerInfo serverInfo;
 
     public boolean isServer;
     public GameServer gameServer;
@@ -33,8 +35,10 @@ public class Engine implements Runnable {
     private MouseManager mouseManager;
 
     //Constructor
-    public Engine(int width, int height, int fps, boolean isServer){
-        this.isServer = isServer;
+    public Engine(int width, int height, int fps, ServerInfo serverInfo){
+        if(serverInfo != null)
+            this.isServer = true;
+        this.serverInfo = serverInfo;
         this.width = width;
         this.height = height;
         this.fps = fps;
@@ -91,7 +95,7 @@ public class Engine implements Runnable {
         }
         else{
             World world = new World(this);
-            this.gameServer = new GameServer(world, 4, "myServer");
+            this.gameServer = new GameServer(world, serverInfo);
             setCurrentScene(world);
         }
     }
