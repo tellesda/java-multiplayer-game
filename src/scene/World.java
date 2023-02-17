@@ -21,7 +21,6 @@ public class World implements Scene{
     //Attributes
     private final Engine parentEngine;
     private CommandLine commandLine;
-    private final RequestHandler requestHandler;
     private final Level level;
     private Camera camera;
     private Player player;
@@ -32,15 +31,14 @@ public class World implements Scene{
 
     public World(Engine engine){
         this.parentEngine = engine;
-        this.requestHandler = new RequestHandler(this);
         this.level = new Level(this);
         this.otherPlayers = new ArrayList<>();
+        engine.getRequestHandler().setWorld(this);
 
         if(parentEngine.isServer)
             return;
 
         this.commandLine = new CommandLine(this);
-        engine.gameClient.setWorld(this);
     }
 
     public Camera getCamera() {
@@ -57,9 +55,6 @@ public class World implements Scene{
     }
     public List<DebugPoint> getDebugPoints() {
         return debugPoints;
-    }
-    public RequestHandler getRequestHandler() {
-        return requestHandler;
     }
     public Level getLevel() {
         return level;

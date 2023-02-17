@@ -1,5 +1,7 @@
 package network;
 
+import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.kryonet.Server;
 import network.packetClasses.*;
 import object.interactive.Door;
 import scene.World;
@@ -8,9 +10,11 @@ import java.awt.Color;
 //This class translates network requests into game actions
 public class RequestHandler {
 
-    private final World world;
+    private World world;
 
-    public RequestHandler(World world){
+    public RequestHandler(){}
+
+    public void setWorld(World world) {
         this.world = world;
     }
 
@@ -19,6 +23,30 @@ public class RequestHandler {
         packet.level = (byte)world.getLevel().getCurrentLevel();
 
         return  packet;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public void registerPackets(Client client){
+        client.getKryo().register(MessagePacket.class);
+        client.getKryo().register(PlayerInfoPacket.class);
+        client.getKryo().register(ServerInfoPacket.class);
+        client.getKryo().register(PlayerMovementPacket.class);
+        client.getKryo().register(OtherPlayerPacket.class);
+        client.getKryo().register(DoorPacket.class);
+        client.getKryo().register(GameStatePacket.class);
+    }
+
+    public void registerPackets(Server server){
+        server.getKryo().register(MessagePacket.class);
+        server.getKryo().register(PlayerInfoPacket.class);
+        server.getKryo().register(ServerInfoPacket.class);
+        server.getKryo().register(PlayerMovementPacket.class);
+        server.getKryo().register(OtherPlayerPacket.class);
+        server.getKryo().register(DoorPacket.class);
+        server.getKryo().register(GameStatePacket.class);
     }
 
     public void processPacket(Packet packet){

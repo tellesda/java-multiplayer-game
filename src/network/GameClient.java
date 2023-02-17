@@ -19,7 +19,6 @@ public class GameClient extends Listener {
     public int id;
     private final Client client;
     private GameClientListener clientListener;
-    private World world;
     private final Engine engine;
 
     public GameClient(Engine engine){
@@ -29,23 +28,15 @@ public class GameClient extends Listener {
         this.client = new Client();
 
         //Register packets
-        client.getKryo().register(MessagePacket.class);
-        client.getKryo().register(PlayerInfoPacket.class);
-        client.getKryo().register(ServerInfoPacket.class);
-        client.getKryo().register(PlayerMovementPacket.class);
-        client.getKryo().register(OtherPlayerPacket.class);
-        client.getKryo().register(DoorPacket.class);
-        client.getKryo().register(GameStatePacket.class);
+        engine.getRequestHandler().registerPackets(client);
     }
 
-    public World getWorld() {
-        return world;
-    }
-    public void setWorld(World world) {
-        this.world = world;
-    }
     public Client getClient() {
         return client;
+    }
+
+    public Engine getEngine() {
+        return engine;
     }
 
     public void connect(String ip, int port){
@@ -82,6 +73,7 @@ public class GameClient extends Listener {
         }
         PlayerMovementPacket packet = new PlayerMovementPacket();
         packet.id = (byte)id;
+        World world = engine.getRequestHandler().getWorld();
         packet.animation = world.getPlayer().getAnimationIndex();
         packet.x = Engine.floatToShort(world.getPlayer().getLocation().getX());
         packet.y = Engine.floatToShort(world.getPlayer().getLocation().getY());

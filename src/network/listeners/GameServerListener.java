@@ -49,7 +49,7 @@ public class GameServerListener extends Listener {
                 server.validateConnection(packet, c);
                 return;
             }
-            server.getWorld().getRequestHandler().processPacket((Packet) p);
+            server.getEngine().getRequestHandler().processPacket((Packet) p);
         }
     }
 

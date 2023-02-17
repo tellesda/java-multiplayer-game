@@ -13,45 +13,33 @@ import java.util.List;
 public class GameServer {
 
     private final int port = 8656;
-    private World world;
-    private Server server;
+    private final Engine engine;
+    private final Server server;
     private GameServerListener serverListener;
 
-    private String serverName;
-    private int maxPlayers;
-    private List<GameConnection> pendingConnections;
-    private List<GameConnection> gameConnections;
+    private final String serverName;
+    private final int maxPlayers;
+    private final List<GameConnection> pendingConnections;
+    private final List<GameConnection> gameConnections;
 
-    public GameServer(World game, ServerInfo serverInfo){
-        if(game == null)
-            return;
+    public GameServer(Engine engine, ServerInfo serverInfo){
 
+        this.engine = engine;
         this.maxPlayers = serverInfo.maxPlayers;
         this.serverName = serverInfo.serverName;
 
         this.gameConnections = new ArrayList<>();
         this.pendingConnections = new ArrayList<>();
-
-        this.world = game;
         this.server = new Server();
 
         //Register packets
-        server.getKryo().register(MessagePacket.class);
-        server.getKryo().register(PlayerInfoPacket.class);
-        server.getKryo().register(ServerInfoPacket.class);
-        server.getKryo().register(PlayerMovementPacket.class);
-        server.getKryo().register(OtherPlayerPacket.class);
-        server.getKryo().register(DoorPacket.class);
-        server.getKryo().register(GameStatePacket.class);
+        engine.getRequestHandler().registerPackets(server);
 
         startServer();
     }
 
     public Server getServer() {
         return server;
-    }
-    public World getWorld() {
-        return world;
     }
     public int getMaxPlayers() {
         return maxPlayers;
@@ -64,6 +52,9 @@ public class GameServer {
     }
     public List<GameConnection> getPendingConnections() {
         return pendingConnections;
+    }
+    public Engine getEngine() {
+        return engine;
     }
 
     public boolean isServerFull(){
@@ -137,6 +128,8 @@ public class GameServer {
     //Runs each time a player is validated by the server
     public void onPlayerValid(GameConnection gc){
 
+        World world = engine.getRequestHandler().getWorld();
+
         //Add OtherPlayer to server
         OtherPlayerPacket playerInfo = new OtherPlayerPacket();
         playerInfo.id = gc.id;
@@ -144,7 +137,7 @@ public class GameServer {
         playerInfo.isAdding = true;
         world.addOtherPlayer(playerInfo);
         sendPacket(playerInfo); //Request all existing players to add the new player
-        world.getRequestHandler().syncClient(gc); //Request the new player to sync with the server
+        engine.getRequestHandler().syncClient(gc); //Request the new player to sync with the server
 
         MessagePacket packet = new MessagePacket();
         packet.message = gc.name + " (ID: " + gc.id + ")" + " has joined the game!";
@@ -155,6 +148,7 @@ public class GameServer {
 
 
     public void sendMovementInfo(){
+        World world = engine.getRequestHandler().getWorld();
         for(var gameConnection : gameConnections){
             if(gameConnection.id == -1)
                 continue;
@@ -181,6 +175,7 @@ public class GameServer {
 
 
     public void removeOtherPlayer(int id){
+        World world = engine.getRequestHandler().getWorld();
         world.removeOtherPlayer(id);
         OtherPlayerPacket packet = new OtherPlayerPacket();
         packet.id = (byte)id;

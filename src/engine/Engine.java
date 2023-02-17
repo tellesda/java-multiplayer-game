@@ -5,6 +5,7 @@ import input.KeyManager;
 import input.MouseManager;
 import network.GameClient;
 import network.GameServer;
+import network.RequestHandler;
 import network.ServerInfo;
 import scene.*;
 
@@ -13,13 +14,13 @@ import java.awt.image.BufferStrategy;
 
 public class Engine implements Runnable {
 
-    //Attributes
+    //Networking
     public Engine hostedServer;
     public ServerInfo serverInfo;
-
     public boolean isServer;
     public GameServer gameServer;
     public GameClient gameClient;
+    private final RequestHandler requestHandler;
 
     private Display display;
     public int width, height;
@@ -43,6 +44,7 @@ public class Engine implements Runnable {
         this.height = height;
         this.fps = fps;
         this.engineTicks = fps;
+        this.requestHandler = new RequestHandler();
 
         if(isServer){
             return;
@@ -62,6 +64,10 @@ public class Engine implements Runnable {
 
     public Scene getCurrentScene() {
         return currentScene;
+    }
+
+    public RequestHandler getRequestHandler() {
+        return requestHandler;
     }
 
     public void setResolution(int width, int height){
@@ -95,7 +101,7 @@ public class Engine implements Runnable {
         }
         else{
             World world = new World(this);
-            this.gameServer = new GameServer(world, serverInfo);
+            this.gameServer = new GameServer(this, serverInfo);
             setCurrentScene(world);
         }
     }

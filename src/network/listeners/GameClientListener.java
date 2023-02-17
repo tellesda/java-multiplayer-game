@@ -26,7 +26,7 @@ public class GameClientListener extends Listener {
                 client.identifyServer(packet);
                 return;
             }
-            client.getWorld().getRequestHandler().processPacket((Packet) p);
+            client.getEngine().getRequestHandler().processPacket((Packet) p);
         }
     }
 
