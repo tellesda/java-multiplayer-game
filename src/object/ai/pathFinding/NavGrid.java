@@ -26,7 +26,7 @@ public class NavGrid {
                     collisions.add(new int[]{j,i});
             }
         //Include furniture collision
-        for(var fur : world.getLevel().getFurnitures())
+        for(var fur : world.getLevel().getFurniture())
             for(var block : fur.getBlocks())
                 if(block.hasCollision())
                     collisions.add(new int[]{(int)block.getLocation().getY(), (int)block.getLocation().getX()});

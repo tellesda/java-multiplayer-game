@@ -2,7 +2,6 @@ package scene;
 
 import debug.DebugPoint;
 import engine.Engine;
-import math.LineTrace;
 import math.Vector2D;
 import network.CommandLine;
 import network.RequestHandler;
@@ -132,7 +131,6 @@ public class World implements Scene{
             camera.setLocation(new Vector2D(spawnX, spawnY));
         }
 
-        npcs.add(new TestNPC(new Vector2D(spawnX, spawnY), this));
         npcs.add(new TestNPC(new Vector2D(spawnX+2, spawnY-4), this));
 
         initSortableObjects();
@@ -158,7 +156,7 @@ public class World implements Scene{
         sortableObjects.addAll(otherPlayers);
         sortableObjects.addAll(level.getInteractiveObjects());
         sortableObjects.addAll(npcs);
-        sortableObjects.addAll(level.getFurnitures());
+        sortableObjects.addAll(level.getFurniture());
     }
 
     public void tick() {

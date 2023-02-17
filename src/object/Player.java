@@ -1,7 +1,6 @@
 package object;
 
 import debug.DebugPoint;
-import debug.Timer;
 import input.KeyManager;
 import input.MouseManager;
 import math.Vector2D;
@@ -60,7 +59,7 @@ public class Player extends Human{
             if(Vector2D.fastDistance(door.getLocation(), getFeetLocation()) < 2)
                 blocks.add(door.getDoorBottom());
 
-        for(var fur : world.getLevel().getFurnitures()) //TODO fix
+        for(var fur : world.getLevel().getFurniture()) //TODO fix
             if(Vector2D.fastDistance(fur.getLocation(), getFeetLocation()) < 3)
                 blocks.addAll(fur.getBlocks());
 

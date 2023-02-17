@@ -2,8 +2,6 @@ package object;
 
 import math.Vector2D;
 import object.ai.pathFinding.NavGrid;
-import object.furnitures.Chair_Kitchen;
-import object.furnitures.Couch;
 import object.furnitures.Furniture;
 import object.interactive.Door;
 import object.interactive.Interactive;
@@ -32,7 +30,7 @@ public class Level {
     private List<Door> doors;
     private List<Interactive> interactiveObjects;
     private List<LitObject> litObjects;
-    private List<Furniture> furnitures;
+    private List<Furniture> furniture;
     private ShadowMap shadowMap;
 
     public Level(World parentWorld){
@@ -66,8 +64,8 @@ public class Level {
     public NavGrid getNavGrid() {
         return navGrid;
     }
-    public List<Furniture> getFurnitures() {
-        return furnitures;
+    public List<Furniture> getFurniture() {
+        return furniture;
     }
     public int getCurrentLevel() {
         return currentLevel;
@@ -130,7 +128,7 @@ public class Level {
         interactiveObjects = new ArrayList<>();
         litObjects = new ArrayList<>();
         doors = new ArrayList<>();
-        furnitures = new ArrayList<>();
+        furniture = new ArrayList<>();
         this.shadowMap = new ShadowMap(mapSizeX, mapSizeY, new Color(35, 35, 60));
         this.tileGrid = new Block[mapSizeY][mapSizeX];
 
@@ -150,7 +148,7 @@ public class Level {
             interactiveObjects = new ArrayList<>();
             litObjects = new ArrayList<>();
             doors = new ArrayList<>();
-            furnitures = new ArrayList<>();
+            furniture = new ArrayList<>();
 
             File file = new File("res/levels/"+levelName);
             BufferedReader bf = new BufferedReader(new FileReader(file));
@@ -210,22 +208,12 @@ public class Level {
                     continue;
                 }
                 if(row[0].equals("fur")){
+                    int idx = Integer.parseInt(row[1]);
                     Vector2D position = new Vector2D(Float.parseFloat(row[2]), Float.parseFloat(row[3]));
-                    int direction = Integer.parseInt(row[4]);
-                    if(row[1].equals("couch")){
-                        Couch couch = new Couch(position);
-                        furnitures.add(couch);
-                        litObjects.add(couch);
-                        couch.setDirection(direction);
-                        continue;
-                    }
-                    if(row[1].equals("chair")){
-                        Chair_Kitchen chair_kitchen = new Chair_Kitchen(position);
-                        furnitures.add(chair_kitchen);
-                        litObjects.add(chair_kitchen);
-                        chair_kitchen.setDirection(direction);
-                        continue;
-                    }
+                    String direction = row[4];
+                    Furniture furniture = new Furniture(idx, position, direction);
+                    this.furniture.add(furniture);
+                    continue;
                 }
 
                 //Tiles

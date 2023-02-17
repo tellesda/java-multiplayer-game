@@ -1,5 +1,7 @@
 package object.furnitures;
 
+import com.esotericsoftware.jsonbeans.JsonReader;
+import com.esotericsoftware.jsonbeans.JsonValue;
 import math.Vector2D;
 import object.Block;
 import object.CollisionBounds;
@@ -9,27 +11,40 @@ import rendering.LitObject;
 import rendering.ShadowMap;
 import scene.World;
 import java.awt.Graphics;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Furniture extends Entity implements LitObject, Sortable {
+public class Furniture extends Entity implements LitObject, Sortable {
 
-    private int direction; //1:front, 2:back, 3:left, 4:right
-
-    protected List<Block> blocksFront;
-    protected List<Block> blocksBack;
-    protected List<Block> blocksLeft;
-    protected List<Block> blocksRight;
-
-    public Furniture(Vector2D location){
-        super(location, new Vector2D(1,1), new CollisionBounds(-1, 1, -1, 0.5f, location));
+    enum Direction {
+        FRONT,
+        BACK,
+        LEFT,
+        RIGHT
     }
 
-    public void setDirection(int direction) {
-        this.direction = direction;
+    private final int idx;
+    private String name;
+    private float y_offset;
+    private Direction direction;
+
+    private List<Block> blocksFRONT;
+    private List<Block> blocksBACK;
+    private List<Block> blocksLEFT;
+    private List<Block> blocksRIGHT;
+
+    public Furniture(int idx, Vector2D location, String dir){
+        super(location, new Vector2D(1,1), new CollisionBounds(-1, 1, -1, 0.5f, location));
+        this.idx = idx;
+        this.direction = Direction.valueOf(dir);
+        loadFurniture();
+
     }
 
     public float getY() {
-        return this.location.getY();
+        return this.location.getY()+y_offset;
     }
 
     public List<Block> getBlocks() {
@@ -37,13 +52,52 @@ public abstract class Furniture extends Entity implements LitObject, Sortable {
         List<Block> blocks;
 
         switch (direction){
-            case 1 -> blocks = blocksBack;
-            case 2 -> blocks = blocksLeft;
-            case 3 -> blocks = blocksRight;
-            default -> blocks = blocksFront;
+            case BACK -> blocks = blocksBACK;
+            case LEFT -> blocks = blocksLEFT;
+            case RIGHT -> blocks = blocksRIGHT;
+            default -> blocks = blocksFRONT;
         }
 
         return blocks;
+    }
+
+    public void loadFurniture(){
+
+        this.blocksFRONT = new ArrayList<>(4);
+        this.blocksLEFT = new ArrayList<>(4);
+        this.blocksRIGHT = new ArrayList<>(4);
+        this.blocksBACK = new ArrayList<>(4);
+
+        try {
+            FileReader file = new FileReader("res/furniture/furniture.json");
+            JsonReader jsonReader = new JsonReader();
+
+            JsonValue jsonValue = jsonReader.parse(file);
+            jsonValue = jsonValue.get("furniture").get(idx);
+
+            this.name = jsonValue.get("name").toString();
+            this.y_offset = jsonValue.get("y_offset").asFloat();
+
+
+            for(Direction dir : Direction.values()){
+
+                String blocksName = "blocks"+dir;
+                int size = jsonValue.get(blocksName).size();
+
+                for(int i=0; i<size; i++){
+                    JsonValue jv = jsonValue.get(blocksName).get(i);
+                    int blockIdx = jv.get("idx").asInt();
+
+                    jv = jv.get("location");
+                    Vector2D blockLocation = new Vector2D(jv.get(0).asFloat(), jv.get(1).asFloat());
+                    Vector2D wsBlockLocation = Vector2D.add(location, blockLocation);
+                    blocksFRONT.add(new Block(wsBlockLocation, blockIdx));
+                }
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public void render(Graphics g, int width, int height, World world) {
