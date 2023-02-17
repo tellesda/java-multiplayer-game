@@ -4,22 +4,22 @@
       "idx": 0,
       "name": "redCouch",
       "y_offset": 0.5,
-      "blocksFront": [
+      "blocksFRONT": [
         {"idx": 12, "location":  [-0.5,-0.5]},
         {"idx": 13, "location":  [0.5,-0.5]},
         {"idx": 26, "location":  [-0.5,0.5]},
         {"idx": 27, "location":  [0.5,0.5]}],
-      "blocksBack": [
+      "blocksBACK": [
         {"idx": 12, "location":  [-0.5,-0.5]},
         {"idx": 13, "location":  [0.5,-0.5]},
         {"idx": 26, "location":  [-0.5,0.5]},
         {"idx": 27, "location":  [0.5,0.5]}],
-      "blocksLeft": [
+      "blocksLEFT": [
         {"idx": 12, "location":  [-0.5,-0.5]},
         {"idx": 13, "location":  [0.5,-0.5]},
         {"idx": 26, "location":  [-0.5,0.5]},
         {"idx": 27, "location":  [0.5,0.5]}],
-      "blocksRight": [
+      "blocksRIGHT": [
         {"idx": 12, "location":  [-0.5,-0.5]},
         {"idx": 13, "location":  [0.5,-0.5]},
         {"idx": 26, "location":  [-0.5,0.5]},
@@ -29,16 +29,16 @@
       "idx": 1,
       "name": "chairKitchen",
       "y_offset": 0.5,
-      "blocksFront": [
+      "blocksFRONT": [
         {"idx": 88, "location":  [0,-0.5]},
         {"idx": 102, "location":  [0,0.5]}],
-      "blocksBack": [
+      "blocksBACK": [
         {"idx": 88, "location":  [0,-0.5]},
         {"idx": 102, "location":  [0,0.5]}],
-      "blocksLeft": [
+      "blocksLEFT": [
         {"idx": 89, "location":  [0,-0.5]},
         {"idx": 103, "location":  [0,0.5]}],
-      "blocksRight": [
+      "blocksRIGHT": [
         {"idx": 87, "location":  [0,-0.5]},
         {"idx": 101, "location":  [0,0.5]}]
     }

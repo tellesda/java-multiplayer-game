@@ -2,6 +2,7 @@ package object.furnitures;
 
 import com.esotericsoftware.jsonbeans.JsonReader;
 import com.esotericsoftware.jsonbeans.JsonValue;
+import debug.DebugPoint;
 import math.Vector2D;
 import object.Block;
 import object.CollisionBounds;
@@ -91,7 +92,13 @@ public class Furniture extends Entity implements LitObject, Sortable {
                     jv = jv.get("location");
                     Vector2D blockLocation = new Vector2D(jv.get(0).asFloat(), jv.get(1).asFloat());
                     Vector2D wsBlockLocation = Vector2D.add(location, blockLocation);
-                    blocksFRONT.add(new Block(wsBlockLocation, blockIdx));
+
+                    switch (dir){
+                        case BACK -> blocksBACK.add(new Block(wsBlockLocation, blockIdx));
+                        case LEFT -> blocksLEFT.add(new Block(wsBlockLocation, blockIdx));
+                        case RIGHT -> blocksRIGHT.add(new Block(wsBlockLocation, blockIdx));
+                        case FRONT -> blocksFRONT.add(new Block(wsBlockLocation, blockIdx));
+                    }
                 }
             }
 
@@ -101,8 +108,9 @@ public class Furniture extends Entity implements LitObject, Sortable {
     }
 
     public void render(Graphics g, int width, int height, World world) {
-        for(var block : getBlocks())
+        for(var block : getBlocks()){
             block.render(g, width, height, world);
+        }
     }
 
 

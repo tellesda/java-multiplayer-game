@@ -212,6 +212,7 @@ public class Level {
                     Vector2D position = new Vector2D(Float.parseFloat(row[2]), Float.parseFloat(row[3]));
                     String direction = row[4];
                     Furniture furniture = new Furniture(idx, position, direction);
+                    litObjects.add(furniture);
                     this.furniture.add(furniture);
                     continue;
                 }
