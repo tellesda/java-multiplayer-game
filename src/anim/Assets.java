@@ -18,7 +18,7 @@ public class Assets {
 
     //UI
     public static BufferedImage button, settingsButton, backButton, deleteButton, folderButton, textButton, imgButton,
-                                exeButton, textBar;
+                                exeButton, textBar, serverOn, serverOff, serverCheck;
 
     //Scenes
     public static BufferedImage computerScene;
@@ -67,6 +67,9 @@ public class Assets {
         imgButton = ImageReader.readImage("/res/textures/ui/imgFile.png");
         exeButton = ImageReader.readImage("/res/textures/ui/exeFile.png");
         textBar = ImageReader.readImage("/res/textures/ui/textBar.png");
+        serverOn = ImageReader.readImage("/res/textures/ui/serverOn.png");
+        serverOff = ImageReader.readImage("/res/textures/ui/serverOff.png");
+        serverCheck = ImageReader.readImage("/res/textures/ui/serverCheck.png");
     }
 
     private static void initJoe(){

@@ -1,5 +1,6 @@
 package network;
 
+import anim.Assets;
 import ui.ServerInfoUI;
 
 import java.io.IOException;
@@ -25,10 +26,14 @@ public class ConnectionAttempt implements Runnable{
 
     @Override
     public void run() {
-        if(canConnect())
+        server.setServerImage(Assets.serverCheck);
+        if(canConnect()) {
             server.getConnectButton().setText("Online");
-        else
+            server.setServerImage(Assets.serverOn);
+        } else {
             server.getConnectButton().setText("Offline");
+            server.setServerImage(Assets.serverOff);
+        }
     }
 
 }

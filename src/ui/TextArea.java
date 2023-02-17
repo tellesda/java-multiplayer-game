@@ -66,6 +66,9 @@ public class TextArea extends UIElement{
             Button.lock = true;
         }
 
+        if(!isSelected)
+            return;
+
         if(!isMouseOver() && getMouseManager().isLeftPressed() && isSelected)
             if(isTextValid()){
                 getKeyManager().resetText();
@@ -101,18 +104,26 @@ public class TextArea extends UIElement{
     @Override
     public void render(Graphics g) {
 
-        int resultX = posX-(scaleX/2);
-        int resultY = posY-(scaleY/2);
+        int renderScaleX = scaleX;
+        int renderScaleY = scaleY;
+
+        if(isMouseOver()){
+            renderScaleX *= 1.08;
+            renderScaleY *= 1.08;
+        }
+
+        int resultX = posX-(renderScaleX/2);
+        int resultY = posY-(renderScaleY/2);
 
         int selectPadding = 2;
         g.setColor(Color.white);
         if(isSelected){
             if(getMouseManager().isLeftPressed() && !isMouseOver())
                 g.setColor(Color.red);
-            g.fillRect(resultX-selectPadding, resultY-selectPadding, scaleX+selectPadding*2, scaleY+selectPadding*2);
+            g.fillRect(resultX-selectPadding, resultY-selectPadding, renderScaleX+selectPadding*2, renderScaleY+selectPadding*2);
         }
 
-        g.drawImage(texture, resultX, resultY, scaleX, scaleY, null);
+        g.drawImage(texture, resultX, resultY, renderScaleX, renderScaleY, null);
 
         if(text != null){
             Color textColor = Color.white;
