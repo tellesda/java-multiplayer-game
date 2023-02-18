@@ -18,8 +18,6 @@ public class MultiplayerTab implements Scene{
     private Button menuButton;
     private Button hostGameButton;
     private ServerSlot serverSlot;
-    private boolean isAttemptingConnection;
-    private int connectionAttempts;
 
     public MultiplayerTab(Engine parentEngine){
         this.uiElements = new ArrayList<>();
@@ -43,19 +41,6 @@ public class MultiplayerTab implements Scene{
     }
 
     public void tick() {
-
-        if(isAttemptingConnection){
-            if(!parentEngine.gameClient.getClient().isConnected()){
-                parentEngine.gameClient.connect("localhost",8656);
-                connectionAttempts++;
-
-                if(connectionAttempts > 5){
-                    isAttemptingConnection = false;
-                    connectionAttempts = 0;
-                }
-
-            }
-        }
 
         for(var uiElement : uiElements)
             uiElement.tick();

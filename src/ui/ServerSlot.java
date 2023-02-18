@@ -67,8 +67,10 @@ public class ServerSlot extends UIElement{
     }
 
     public void addServer(String ip){
-        if(servers.size()==numberOfSlots)
+        if(servers.size()==numberOfSlots){
+            parentEngine.logMessage("Maximum number of server reached!");
             return;
+        }
         int resultY = posY+((servers.size()-(numberOfSlots/2))*padding);
         servers.add(new ServerInfoUI(ip, posX, resultY, (int)(scaleX*0.9f), 50, parentEngine, this));
         saveServerList();

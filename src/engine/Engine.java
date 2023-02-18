@@ -8,6 +8,7 @@ import network.GameServer;
 import network.RequestHandler;
 import network.ServerInfo;
 import scene.*;
+import ui.PopUp;
 
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
@@ -27,6 +28,8 @@ public class Engine implements Runnable {
     public int width, height;
     public int fps;
     public int engineTicks;
+
+    public PopUp popUp;
 
     private Scene currentScene;
 
@@ -96,6 +99,12 @@ public class Engine implements Runnable {
         }
     }
 
+    public void logMessage(String message){
+        if(popUp == null && !isServer){
+            popUp = new PopUp(message, this);
+        }
+    }
+
     private void init(){
         Assets.init();
         if(!isServer){
@@ -123,7 +132,10 @@ public class Engine implements Runnable {
         if(!isServer)
             keyManager.tick();
 
-        currentScene.tick();
+        if(popUp == null)
+            currentScene.tick();
+        else
+            popUp.tick();
     }
 
     private void render(){
@@ -141,6 +153,9 @@ public class Engine implements Runnable {
         g.clearRect(0, 0, width, height);
         //TODO RENDER HERE
         currentScene.render(g);
+
+        if(popUp != null)
+            popUp.render(g);
 
         //Ends render
         bs.show();

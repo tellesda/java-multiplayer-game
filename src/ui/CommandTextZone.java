@@ -48,13 +48,13 @@ public class CommandTextZone extends UIElement{
     @Override
     public void tick() {
 
-        if(isMouseOver() && getMouseManager().isLeftPressed() && !isSelected){
+        if(isMouseOver && getMouseManager().isLeftPressed() && !isSelected){
             isSelected = true;
             commandLine.setVisible(true);
             Button.lock = true;
         }
 
-        if(!isMouseOver() && getMouseManager().isLeftPressed() && isSelected)
+        if(!isMouseOver && getMouseManager().isLeftPressed() && isSelected)
             if(isTextValid()){
                 close();
             }
@@ -91,7 +91,7 @@ public class CommandTextZone extends UIElement{
         int selectPadding = 2;
         g.setColor(Color.white);
         if(isSelected){
-            if(getMouseManager().isLeftPressed() && !isMouseOver())
+            if(getMouseManager().isLeftPressed() && !isMouseOver)
                 g.setColor(Color.red);
             g.fillRect(resultX-selectPadding, resultY-selectPadding, scaleX+selectPadding*2, scaleY+selectPadding*2);
         }

@@ -34,7 +34,7 @@ public class Button extends UIElement{
 
     @Override
     public boolean isClicked(){
-        if(isMouseOver() && getMouseManager().isLeftPressed() && getMouseManager().canClick && !Button.lock){
+        if(isMouseOver && getMouseManager().isLeftPressed() && getMouseManager().canClick && !Button.lock){
             getMouseManager().canClick = false;
             return true;
         }
@@ -51,7 +51,7 @@ public class Button extends UIElement{
         g.setColor(Color.white);
 
         int selectPadding = 2;
-        if(isMouseOver() && !getMouseManager().isLeftPressed()){
+        if(isMouseOver && !getMouseManager().isLeftPressed()){
             g.fillRect(resultX-selectPadding, resultY-selectPadding, scaleX+selectPadding*2, scaleY+selectPadding*2);
         }
 

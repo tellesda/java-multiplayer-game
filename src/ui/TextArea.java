@@ -61,8 +61,9 @@ public class TextArea extends UIElement{
 
     @Override
     public void tick() {
+        super.tick();
 
-        if(isMouseOver() && getMouseManager().isLeftPressed() && !isSelected){
+        if(isMouseOver && getMouseManager().isLeftPressed() && !isSelected){
             isSelected = true;
             Button.lock = true;
         }
@@ -70,7 +71,7 @@ public class TextArea extends UIElement{
         if(!isSelected)
             return;
 
-        if(!isMouseOver() && getMouseManager().isLeftPressed() && isSelected)
+        if(!isMouseOver && getMouseManager().isLeftPressed() && isSelected)
             if(isTextValid()){
                 getKeyManager().resetText();
                 isSelected = false;
@@ -108,7 +109,7 @@ public class TextArea extends UIElement{
         int renderScaleX = scaleX;
         int renderScaleY = scaleY;
 
-        if(isMouseOver()){
+        if(isMouseOver){
             renderScaleX *= 1.08;
             renderScaleY *= 1.08;
         }
@@ -119,7 +120,7 @@ public class TextArea extends UIElement{
         int selectPadding = 2;
         g.setColor(Color.white);
         if(isSelected){
-            if(getMouseManager().isLeftPressed() && !isMouseOver())
+            if(getMouseManager().isLeftPressed() && !isMouseOver)
                 g.setColor(Color.red);
             g.fillRect(resultX-selectPadding, resultY-selectPadding, renderScaleX+selectPadding*2, renderScaleY+selectPadding*2);
         }

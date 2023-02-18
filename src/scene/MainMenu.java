@@ -3,6 +3,7 @@ package scene;
 import anim.Assets;
 import engine.Engine;
 import ui.Button;
+import ui.PopUp;
 import ui.UIElement;
 import java.awt.Graphics;
 import java.awt.Color;

@@ -11,6 +11,7 @@ public abstract class UIElement {
     protected final Engine parentEngine;
     public int posX, posY, scaleX, scaleY;
     public BufferedImage texture;
+    public boolean isMouseOver;
 
     public UIElement(int posX, int posY, int scaleX, int scaleY, BufferedImage texture, Engine parentEngine){
         this.posX = posX;
@@ -55,7 +56,7 @@ public abstract class UIElement {
     }
 
     public boolean isClicked(){
-        if(isMouseOver() && getMouseManager().isLeftPressed() && getMouseManager().canClick){
+        if(isMouseOver && getMouseManager().isLeftPressed() && getMouseManager().canClick){
             getMouseManager().canClick = false;
             return true;
         }
@@ -66,7 +67,9 @@ public abstract class UIElement {
     }
 
     public void tick(){
-        if(!getMouseManager().isLeftPressed() && isMouseOver())
+        this.isMouseOver = isMouseOver();
+
+        if(!getMouseManager().isLeftPressed() && isMouseOver)
             getMouseManager().canClick = true;
     }
 

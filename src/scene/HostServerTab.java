@@ -52,13 +52,14 @@ public class HostServerTab implements Scene{
 
         if(isAttemptingConnection){
             if(!parentEngine.gameClient.getClient().isConnected()){
-                parentEngine.gameClient.connect("localhost", parentEngine.port);
+                parentEngine.gameClient.connect("locaalhost", parentEngine.port);
                 connectionAttempts++;
 
                 if(connectionAttempts > 5){
                     isAttemptingConnection = false;
                     connectionAttempts = 0;
                     //close server
+                    parentEngine.logMessage("Error while creating the server! Please try again.");
                     parentEngine.closeServer();
                 }
 
@@ -72,12 +73,17 @@ public class HostServerTab implements Scene{
             parentEngine.setCurrentScene(new MultiplayerTab(parentEngine));
         }
         if(hostGameButton.isClicked()){
-            if(parentEngine.hostedServer == null){
+            if(!serverMaxPlayers.getText().equals("0") && !serverMaxPlayers.getText().equals("00")){
+                if(parentEngine.hostedServer == null){
 
-                parentEngine.hostedServer = new Engine(800,600,60,
-                        new ServerInfo(serverName.getText(), serverMaxPlayers.getValue()));
-                parentEngine.hostedServer.start();
-                isAttemptingConnection = true;
+                    parentEngine.hostedServer = new Engine(800,600,60,
+                            new ServerInfo(serverName.getText(), serverMaxPlayers.getValue()));
+                    parentEngine.hostedServer.start();
+                    isAttemptingConnection = true;
+                }
+            }
+            else{
+                parentEngine.logMessage("Please enter a valid number of players.");
             }
         }
     }
