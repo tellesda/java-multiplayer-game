@@ -19,12 +19,19 @@ public class GameServerListener extends Listener {
 
         if(server.isServerFull()){
             System.out.println("Max number of players reached");
+            MessagePacket messagePacket = new MessagePacket();
+            messagePacket.isPopup = true;
+            messagePacket.message = "The server is full!";
+            c.sendTCP(messagePacket);
             c.close();
             return;
         }
         for(var pendingConnection : server.getPendingConnections()){
             if(c.getRemoteAddressTCP().getHostString().equals(pendingConnection.adress)){
-                System.out.println("Connection already pending.");
+                MessagePacket messagePacket = new MessagePacket();
+                messagePacket.isPopup = true;
+                messagePacket.message = "Unexpected error. Please try again!";
+                c.sendTCP(messagePacket);
                 c.close();
                 return;
             }

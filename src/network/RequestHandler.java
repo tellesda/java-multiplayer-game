@@ -2,6 +2,7 @@ package network;
 
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Server;
+import engine.Engine;
 import network.packetClasses.*;
 import object.interactive.Door;
 import scene.World;
@@ -10,9 +11,12 @@ import java.awt.Color;
 //This class translates network requests into game actions
 public class RequestHandler {
 
+    private final Engine engine;
     private World world;
 
-    public RequestHandler(){}
+    public RequestHandler(Engine engine){
+        this.engine = engine;
+    }
 
     public void setWorld(World world) {
         this.world = world;
@@ -114,6 +118,11 @@ public class RequestHandler {
     }
 
     private void processMessage(MessagePacket packet){
+
+        if(packet.isPopup){
+            engine.logMessage(packet.message);
+            return;
+        }
 
         if(world.getParentEngine().isServer){
             packet.isOrange = false;

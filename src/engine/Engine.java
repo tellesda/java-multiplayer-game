@@ -48,7 +48,7 @@ public class Engine implements Runnable {
         this.height = height;
         this.fps = fps;
         this.engineTicks = fps;
-        this.requestHandler = new RequestHandler();
+        this.requestHandler = new RequestHandler(this);
 
         if(isServer){
             return;

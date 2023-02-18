@@ -52,7 +52,7 @@ public class HostServerTab implements Scene{
 
         if(isAttemptingConnection){
             if(!parentEngine.gameClient.getClient().isConnected()){
-                parentEngine.gameClient.connect("locaalhost", parentEngine.port);
+                parentEngine.gameClient.connect("localhost", parentEngine.port);
                 connectionAttempts++;
 
                 if(connectionAttempts > 5){
