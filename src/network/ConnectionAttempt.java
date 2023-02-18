@@ -15,7 +15,7 @@ public class ConnectionAttempt implements Runnable{
     }
 
     public boolean canConnect(){
-        try (Socket s = new Socket(server.getServerIp(), 8656)) {
+        try (Socket s = new Socket(server.getServerIp(), server.getParentEngine().port)) {
 
             return true;
         } catch (IOException ex) {

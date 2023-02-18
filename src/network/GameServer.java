@@ -12,7 +12,6 @@ import java.util.List;
 
 public class GameServer {
 
-    private final int port = 8656;
     private final Engine engine;
     private final Server server;
     private GameServerListener serverListener;
@@ -65,7 +64,7 @@ public class GameServer {
         try {
 
             //Start the server
-            server.bind(port,port);
+            server.bind(engine.port,engine.port);
             server.start();
             if(serverListener == null){
                 GameServerListener listener = new GameServerListener(this);
@@ -75,6 +74,8 @@ public class GameServer {
             System.out.println("Server is operational");
             System.out.println("name: " + serverName);
             System.out.println("max players: " + maxPlayers);
+
+
 
 
         } catch (IOException e) {
@@ -125,6 +126,14 @@ public class GameServer {
 
     }
 
+    public void echoAll(String message){
+        MessagePacket packet = new MessagePacket();
+        packet.message = message;
+        System.out.println(packet.message);
+        packet.isOrange = true;
+        sendPacket(packet);
+    }
+
     //Runs each time a player is validated by the server
     public void onPlayerValid(GameConnection gc){
 
@@ -139,11 +148,7 @@ public class GameServer {
         sendPacket(playerInfo); //Request all existing players to add the new player
         engine.getRequestHandler().syncClient(gc); //Request the new player to sync with the server
 
-        MessagePacket packet = new MessagePacket();
-        packet.message = gc.name + " (ID: " + gc.id + ")" + " has joined the game!";
-        System.out.println(packet.message);
-        packet.isOrange = true;
-        sendPacket(packet);
+        echoAll(gc.name + " has joined the game!");
     }
 
 

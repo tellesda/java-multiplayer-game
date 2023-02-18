@@ -138,11 +138,7 @@ public class Player extends Human{
                 world.getParentEngine().gameClient.disconnect();
 
             //Close server if hosting
-            if(world.getParentEngine().hostedServer != null){
-                world.getParentEngine().hostedServer.gameServer.stopServer();
-                world.getParentEngine().hostedServer.stop();
-                world.getParentEngine().hostedServer = null;
-            }
+            world.getParentEngine().closeServer();
         }
     }
 

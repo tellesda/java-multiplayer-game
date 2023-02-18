@@ -37,8 +37,10 @@ public class HostServerTab implements Scene{
         menuButton = new Button(null, Assets.backButton, downLeftX, downLeftY, 50, 50, parentEngine);
 
         hostGameButton = new Button("Host game", null, centerX, downLeftY, 200, 50, parentEngine);
-        serverName = new TextArea(false, 3,24,centerX,centerY-50,400,50,parentEngine,parentEngine.gameClient.name+"'s server","Server name...");
-        serverMaxPlayers = new TextArea(true, 1,2,centerX,centerY+50, 100, 50, parentEngine, "4", "Max players...");
+        serverName = new TextArea(false, 3,24,centerX,centerY-50,400,50,
+                parentEngine,parentEngine.gameClient.name+"'s server","Server name...", "Server name");
+        serverMaxPlayers = new TextArea(true, 1,2,centerX,centerY+50, 100, 50,
+                parentEngine, "4", "Max players...", "Max players");
         uiElements.add(hostGameButton);
         uiElements.add(menuButton);
         uiElements.add(serverMaxPlayers);
@@ -50,12 +52,14 @@ public class HostServerTab implements Scene{
 
         if(isAttemptingConnection){
             if(!parentEngine.gameClient.getClient().isConnected()){
-                parentEngine.gameClient.connect("localhost",8656);
+                parentEngine.gameClient.connect("localhost", parentEngine.port);
                 connectionAttempts++;
 
                 if(connectionAttempts > 5){
                     isAttemptingConnection = false;
                     connectionAttempts = 0;
+                    //close server
+                    parentEngine.closeServer();
                 }
 
             }

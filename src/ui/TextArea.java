@@ -5,7 +5,6 @@ import engine.Engine;
 
 import java.awt.Graphics;
 import java.awt.Color;
-import java.text.ParseException;
 
 public class TextArea extends UIElement{
 
@@ -14,18 +13,20 @@ public class TextArea extends UIElement{
     private final int maxChars;
     private final boolean numOnly;
     private String text;
+    private final String title;
     private final String emptyMessage;
     private final String defaultText;
     private int textLen;
 
     public TextArea(boolean numOnly, int minChars, int maxChars, int posX, int posY, int scaleX, int scaleY,
-                    Engine parentEngine, String defaultText, String emptyMessage){
+                    Engine parentEngine, String defaultText, String emptyMessage, String title){
         super(posX, posY, scaleX, scaleY, Assets.textBar, parentEngine);
         this.numOnly = numOnly;
         this.minChars = minChars;
         this.maxChars = maxChars;
         this.defaultText = defaultText;
         this.emptyMessage = emptyMessage;
+        this.title = title;
         updateText(defaultText);
     }
 
@@ -138,6 +139,11 @@ public class TextArea extends UIElement{
             }
             int stringWidth = g.getFontMetrics().stringWidth(text);
             g.drawString(text, posX-(stringWidth/2), posY);
+
+            //Render title
+            g.setColor(Color.white);
+            stringWidth = g.getFontMetrics().stringWidth(title);
+            g.drawString(title, posX-(stringWidth/2), posY-(scaleY+16)/2);
         }
     }
 }

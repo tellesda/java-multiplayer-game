@@ -80,8 +80,8 @@ public class RequestHandler {
         else
             door.close();
 
-        //Send back door info to clients
         if(world.getParentEngine().isServer){
+            //Send back door info to clients
             world.getParentEngine().gameServer.sendPacket(packet);
         }
     }

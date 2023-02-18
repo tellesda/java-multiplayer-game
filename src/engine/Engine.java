@@ -15,6 +15,7 @@ import java.awt.image.BufferStrategy;
 public class Engine implements Runnable {
 
     //Networking
+    public final int port = 8655;
     public Engine hostedServer;
     public ServerInfo serverInfo;
     public boolean isServer;
@@ -85,6 +86,14 @@ public class Engine implements Runnable {
         //commandLine.adjustResolution(height);
         setCurrentScene(new SettingsTab(this));
 
+    }
+
+    public void closeServer(){
+        if(hostedServer != null){
+            hostedServer.gameServer.stopServer();
+            hostedServer.stop();
+            hostedServer = null;
+        }
     }
 
     private void init(){

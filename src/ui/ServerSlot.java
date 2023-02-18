@@ -31,7 +31,7 @@ public class ServerSlot extends UIElement{
         this.servers = new ArrayList<>(numberOfSlots);
         this.addButton = new Button("Add server", null, posX-110, posY+(scaleY/2)-60, 200, 50, parentEngine);
         this.ipArea = new TextArea(false, 1,15,posX+110,posY+(scaleY/2)-60, 200, 50,
-                parentEngine, "127.0.0.1", "Type an ip address...");
+                parentEngine, "127.0.0.1", "Type an ip address...", "ip address");
         loadServerList();
     }
 

@@ -57,7 +57,7 @@ public class ServerInfoUI extends UIElement{
         if(connectButton.isClicked()){
             if(getConnectButton().getText().equals("Online")){
                 if(!parentEngine.gameClient.getClient().isConnected())
-                    parentEngine.gameClient.connect(serverIp, 8656);
+                    parentEngine.gameClient.connect(serverIp, parentEngine.port);
             }
         }
         if(removeButton.isClicked()){
