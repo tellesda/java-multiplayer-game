@@ -139,7 +139,7 @@ public class World implements Scene{
         else{
             camera = new Camera(new Vector2D(0f, 0f), this);
             player = new Player(new Vector2D(0f, 0f), this);
-            loadLevel(0);
+            loadLevel(2);
             commandLine.init();
         }
 

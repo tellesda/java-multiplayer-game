@@ -79,9 +79,9 @@ public class Level {
 
     public List<Block> getNearBlocks(Vector2D location, int searchRadius){
         int startX = getLeftTileIndex(location, searchRadius);
-        int endX = getRightTileIndex(location, searchRadius, mapSizeX);
+        int endX = getRightTileIndex(location, searchRadius);
         int startY = getUpTileIndex(location, searchRadius);
-        int endY = getBottomTileIndex(location, searchRadius, mapSizeY);
+        int endY = getBottomTileIndex(location, searchRadius);
 
         List<Block> blocks = new ArrayList<>();
         for(int m = startY; m<endY; m++)
@@ -97,9 +97,9 @@ public class Level {
             return null;
 
         int startX = getLeftTileIndex(location, searchRadius);
-        int endX = getRightTileIndex(location, searchRadius, mapSizeX);
+        int endX = getRightTileIndex(location, searchRadius);
         int startY = getUpTileIndex(location, searchRadius);
-        int endY = getBottomTileIndex(location, searchRadius, mapSizeY);
+        int endY = getBottomTileIndex(location, searchRadius);
 
         Block nearest = null;
         float minDistance = 10000;
@@ -129,7 +129,7 @@ public class Level {
         litObjects = new ArrayList<>();
         doors = new ArrayList<>();
         furniture = new ArrayList<>();
-        this.shadowMap = new ShadowMap(mapSizeX, mapSizeY, new Color(35, 35, 60), parentWorld);
+        this.shadowMap = new ShadowMap(mapSizeX, mapSizeY, new Color(35, 35, 60));
         this.tileGrid = new Block[mapSizeY][mapSizeX];
 
         Block block = new Block(new Vector2D(0,0),0);
@@ -137,8 +137,7 @@ public class Level {
 
         this.currentLevel = 0;
         navGrid = new NavGrid(parentWorld);
-        shadowMap.updateShadowMap(parentWorld);
-        shadowMap.applyAllLights(parentWorld);
+        shadowMap.drawShadowMap(parentWorld);
     }
 
     public void loadWorld(int level){
@@ -163,7 +162,7 @@ public class Level {
                 if(row[0].equals("m")){
                     this.mapSizeX = Integer.parseInt(row[1]);
                     this.mapSizeY = Integer.parseInt(row[2]);
-                    this.shadowMap = new ShadowMap(mapSizeX, mapSizeY, new Color(35, 35, 60), parentWorld);
+                    this.shadowMap = new ShadowMap(mapSizeX, mapSizeY, new Color(35, 35, 60));
                     this.tileGrid = new Block[mapSizeY][mapSizeX];
                     continue;
                 }
@@ -236,36 +235,39 @@ public class Level {
 
 
             //Lightning
-            shadowMap.updateShadowMap(parentWorld);
-            shadowMap.applyAllLights(parentWorld);
+            shadowMap.drawShadowMap(parentWorld);
+            for(var light : pointLights){
+                light.updateNearbyLitObjects();
+                light.drawLight();
+            }
 
         } catch (IOException e) {
             System.out.println("Error : Couldn't load the level");
         }
     }
 
-    public static int getUpTileIndex(Vector2D location, int radius){
+    private int getUpTileIndex(Vector2D location, int radius){
         int result = (int)(location.getY()+1 - radius);
         if(result < 0)
             result = 0;
         return result;
     }
-    public static int getLeftTileIndex(Vector2D location, int radius){
+    private int getLeftTileIndex(Vector2D location, int radius){
         int result = (int)(location.getX()+1 - radius);
         if(result < 0)
             result = 0;
         return result;
     }
-    public static int getRightTileIndex(Vector2D location, int radius, int mapSizeX){
+    private int getRightTileIndex(Vector2D location, int radius){
         int result = (int)(location.getX()+1 + radius);
-        if(result > mapSizeX-1)
-            result = mapSizeX;
+        if(result > getMapSizeX()-1)
+            result = getMapSizeX();
         return result;
     }
-    public static int getBottomTileIndex(Vector2D location, int radius, int mapSizeY){
+    private int getBottomTileIndex(Vector2D location, int radius){
         int result = (int)(location.getY()+1 + radius);
-        if(result > mapSizeY-1)
-            result = mapSizeY;
+        if(result > getMapSizeY()-1)
+            result = getMapSizeY();
         return result;
     }
 }

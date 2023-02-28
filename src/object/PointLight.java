@@ -2,6 +2,7 @@ package object;
 
 import anim.Assets;
 import math.Vector2D;
+import rendering.LitObject;
 import rendering.TextureModifier;
 import scene.World;
 
@@ -9,7 +10,8 @@ import java.awt.Graphics2D;
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.util.Stack;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PointLight extends Entity{
 
@@ -17,8 +19,7 @@ public class PointLight extends Entity{
     private final float radius;
     private final BufferedImage lightTexture;
     private final World parentWorld;
-
-    private final Stack<Block> blocksToUpdate;
+    private List<LitObject> nearbyLitObjects;
 
     public PointLight(Vector2D location, float radius, Color color, World parentWorld){
         super(location, new Vector2D(1f,1f), null);
@@ -26,16 +27,13 @@ public class PointLight extends Entity{
         this.radius = radius;
         this.color = color;
         this.lightTexture = TextureModifier.paintTexture(Assets.pointLight, color);
-        blocksToUpdate = new Stack<>();
     }
 
     @Override
     public void setLocation(Vector2D location) {
-        addBlocksToUpdate();
         super.setLocation(location);
-        addBlocksToUpdate();
-        parentWorld.getLevel().getShadowMap().updateShadowMap(parentWorld);
-        drawLight();
+        updateNearbyLitObjects();
+        parentWorld.getLevel().getShadowMap().drawShadowMap(parentWorld);
     }
 
     public void drawOnShadowMap(Graphics2D sg){
@@ -44,33 +42,17 @@ public class PointLight extends Entity{
         sg.drawImage(lightTexture,(int)(location.getX()*16-halfRadius), (int)(location.getY()*16-halfRadius), (int)(radius*16), (int)(radius*16), null);
     }
 
-    public void addBlocksToUpdate(){
-
-        int searchRadius = (int)(radius*0.51);
-        int startX = Level.getLeftTileIndex(location, searchRadius);
-        int endX = Level.getRightTileIndex(location, searchRadius, parentWorld.getLevel().getMapSizeX());
-        int startY = Level.getUpTileIndex(location, searchRadius);
-        int endY = Level.getBottomTileIndex(location, searchRadius, parentWorld.getLevel().getMapSizeY());
-
-        for(int m = startY; m<endY; m++)
-            for(int n = startX; n<endX; n++){
-                Block block = parentWorld.getLevel().getTileGrid()[m][n];
-                if(!block.updateLight){
-                    blocksToUpdate.add(block);
-                    block.updateLight = true;
-                }
-            }
+    public void updateNearbyLitObjects(){
+        nearbyLitObjects = new ArrayList<>();
+        for(var litObject : parentWorld.getLevel().getLitObjects()){
+            if(Vector2D.distance(litObject.getLocation(), location) < radius+0.6)
+                nearbyLitObjects.add(litObject);
+        }
     }
 
     public void drawLight(){
-        addBlocksToUpdate();
-        while(blocksToUpdate.size() > 0){
-            Block block = blocksToUpdate.pop();
-            if(block.updateLight){
-                block.updateLightTexture(parentWorld.getLevel().getShadowMap());
-                block.updateLight = false;
-            }
-        }
+        for(var litObject : nearbyLitObjects)
+            litObject.updateLightTexture(parentWorld.getLevel().getShadowMap());
     }
 
     public void init(){}

@@ -69,7 +69,7 @@ public class TextureModifier {
 
         int xa = (x >> 24) & 0xFF;
         int ya = (y >> 24) & 0xFF;
-        int a = xa + ya;
+        int a = Math.min(255, xa + ya);
 
         return (b) | (g << 8) | (r << 16) | (a << 24);
     }
