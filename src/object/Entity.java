@@ -14,7 +14,7 @@ public abstract class Entity {
     protected Vector2D scale;
     protected CollisionBounds collision;
     protected final LinkedList<Interpolator> interpolators;
-    protected boolean updateLight;
+    protected boolean updateLight = true;
 
     public Entity(Vector2D location, Vector2D scale, CollisionBounds collision){
         this.collision = collision;

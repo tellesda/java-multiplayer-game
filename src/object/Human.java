@@ -41,6 +41,10 @@ public abstract class Human extends Entity implements Sortable{
         this.currentAnimation = animIDLE;
         this.world = world;
         this.timer = new Timer(0.01f, world);
+        this.textureLit = new BufferedImage(
+                currentAnimation.getCurrentFrame().getWidth(),
+                currentAnimation.getCurrentFrame().getHeight(),
+                currentAnimation.getCurrentFrame().getType());
 
     }
 
@@ -101,7 +105,7 @@ public abstract class Human extends Entity implements Sortable{
 
     public void updateTextureLit(ShadowMap shadowMap){
         BufferedImage frame = this.currentAnimation.getCurrentFrame();
-        this.textureLit = TextureModifier.applyShadowMap(frame, shadowMap, this);
+        TextureModifier.applyShadowMap(frame,this.textureLit, shadowMap, this);
     }
 
     public void init(){}

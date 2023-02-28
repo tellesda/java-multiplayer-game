@@ -61,10 +61,4 @@ public class ShadowMap {
             light.drawOnShadowMap(sg);
     }
 
-    public void applyAllLights(World world){
-        for(var light : world.getLevel().getPointLights()){
-            light.drawLight();
-        }
-    }
-
 }

@@ -23,6 +23,7 @@ public class Block extends Entity implements LitObject {
     public Block(Vector2D location, int blockIndex){
         super(location, new Vector2D(1f, 1f), new CollisionBounds(-0.5f,0.5f,-0.5f,0.5f, location));
         this.blockTexture = Assets.mapBlocks[blockIndex];
+        this.blockTextureLit = new BufferedImage(blockTexture.getWidth(), blockTexture.getHeight(), blockTexture.getType());
         this.blockIndex = blockIndex;
 
         for(int i : Assets.tilesWithCollision)
@@ -45,7 +46,7 @@ public class Block extends Entity implements LitObject {
     }
 
     public void updateLightTexture(ShadowMap shadowMap){
-        this.blockTextureLit = TextureModifier.applyShadowMap(blockTexture, shadowMap, this);
+        TextureModifier.applyShadowMap(blockTexture, blockTextureLit, shadowMap, this);
     }
 
     public void init(){}
@@ -86,6 +87,10 @@ public class Block extends Entity implements LitObject {
 
         if(blockIndex == 111)
             return; //TODO verify if the texture grid is modified
+
+        if(updateLight){
+            updateLightTexture(world.getLevel().getShadowMap());
+        }
 
        // Vector2D pov = world.getPlayer().getFeetLocation();
         //int mapX = world.getLevel().getMapSizeX();

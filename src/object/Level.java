@@ -138,7 +138,6 @@ public class Level {
         this.currentLevel = 0;
         navGrid = new NavGrid(parentWorld);
         shadowMap.updateShadowMap(parentWorld);
-        shadowMap.applyAllLights(parentWorld);
     }
 
     public void loadWorld(int level){
@@ -237,7 +236,6 @@ public class Level {
 
             //Lightning
             shadowMap.updateShadowMap(parentWorld);
-            shadowMap.applyAllLights(parentWorld);
 
         } catch (IOException e) {
             System.out.println("Error : Couldn't load the level");

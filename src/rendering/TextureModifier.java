@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 
 public class TextureModifier {
 
+    //TODO remove
     public static BufferedImage copyImage(BufferedImage source){
         BufferedImage b = new BufferedImage(source.getWidth(), source.getHeight(), source.getType());
         Graphics2D g = b.createGraphics();
@@ -16,21 +17,19 @@ public class TextureModifier {
         return b;
     }
 
-    public static BufferedImage applyShadowMap(BufferedImage source, ShadowMap shadowMap, Entity entity){
+    public static void applyShadowMap(BufferedImage src, BufferedImage dst, ShadowMap shadowMap, Entity entity){
 
-        BufferedImage texture = copyImage(source);
-        for(int y=0; y<texture.getHeight(); y++){
-            for(int x=0; x<texture.getWidth(); x++){
-                int sourceRGB = source.getRGB(x,y);
+        for(int y=0; y<dst.getHeight(); y++){
+            for(int x=0; x<dst.getWidth(); x++){
+                int sourceRGB = src.getRGB(x,y);
                 if(sourceRGB == 0) //no need to modify if the pixel is black
                     continue;
                 Vector2D localPos = relativePixelLocation(x,y,entity.getScale());
                 Vector2D worldPos = Vector2D.add(entity.getLocation(), localPos);
                 int resultRGB = mixPixel(sourceRGB, shadowMap.getRGB(worldPos));
-                texture.setRGB(x,y, resultRGB);
+                dst.setRGB(x,y, resultRGB);
             }
         }
-        return texture;
     }
 
 

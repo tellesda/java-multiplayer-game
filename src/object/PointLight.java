@@ -9,7 +9,6 @@ import java.awt.Graphics2D;
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.util.Stack;
 
 public class PointLight extends Entity{
 
@@ -18,15 +17,12 @@ public class PointLight extends Entity{
     private final BufferedImage lightTexture;
     private final World parentWorld;
 
-    private final Stack<Block> blocksToUpdate;
-
     public PointLight(Vector2D location, float radius, Color color, World parentWorld){
         super(location, new Vector2D(1f,1f), null);
         this.parentWorld = parentWorld;
         this.radius = radius;
         this.color = color;
         this.lightTexture = TextureModifier.paintTexture(Assets.pointLight, color);
-        blocksToUpdate = new Stack<>();
     }
 
     @Override
@@ -35,7 +31,6 @@ public class PointLight extends Entity{
         super.setLocation(location);
         addBlocksToUpdate();
         parentWorld.getLevel().getShadowMap().updateShadowMap(parentWorld);
-        drawLight();
     }
 
     public void drawOnShadowMap(Graphics2D sg){
@@ -46,7 +41,7 @@ public class PointLight extends Entity{
 
     public void addBlocksToUpdate(){
 
-        int searchRadius = (int)(radius*0.51);
+        int searchRadius = (int)(radius*0.5);
         int startX = Level.getLeftTileIndex(location, searchRadius);
         int endX = Level.getRightTileIndex(location, searchRadius, parentWorld.getLevel().getMapSizeX());
         int startY = Level.getUpTileIndex(location, searchRadius);
@@ -55,22 +50,8 @@ public class PointLight extends Entity{
         for(int m = startY; m<endY; m++)
             for(int n = startX; n<endX; n++){
                 Block block = parentWorld.getLevel().getTileGrid()[m][n];
-                if(!block.updateLight){
-                    blocksToUpdate.add(block);
-                    block.updateLight = true;
-                }
+                block.updateLight = true;
             }
-    }
-
-    public void drawLight(){
-        addBlocksToUpdate();
-        while(blocksToUpdate.size() > 0){
-            Block block = blocksToUpdate.pop();
-            if(block.updateLight){
-                block.updateLightTexture(parentWorld.getLevel().getShadowMap());
-                block.updateLight = false;
-            }
-        }
     }
 
     public void init(){}

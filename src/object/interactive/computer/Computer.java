@@ -24,13 +24,14 @@ public class Computer extends Entity implements Interactive, LitObject, Sortable
     private final String name;
     private final Color textColor;
     private final BufferedImage computerTexture;
-    private BufferedImage textureLit;
+    private final BufferedImage textureLit;
     private Folder root;
     private File currentFile;
 
     public Computer(String name, Vector2D location, Color textColor, Engine parentEngine){
         super(location, new Vector2D(1f, 1f), new CollisionBounds(-0.5f,0.5f,-0.5f,0.5f, location));
         this.computerTexture = Assets.mapBlocks[110];
+        this.textureLit = new BufferedImage(computerTexture.getWidth(), computerTexture.getHeight(), computerTexture.getType());
         this.name = name;
         this.textColor = textColor;
         this.parentEngine = parentEngine;
@@ -63,7 +64,7 @@ public class Computer extends Entity implements Interactive, LitObject, Sortable
     }
 
     public void updateLightTexture(ShadowMap shadowMap){
-        this.textureLit = TextureModifier.applyShadowMap(computerTexture, shadowMap, this);
+        TextureModifier.applyShadowMap(computerTexture,this.textureLit, shadowMap, this);
     }
 
     public void load(ComputerScene computerScene){
