@@ -6,4 +6,6 @@ This is one of my side projects: A weird multiplayer horror game that uses tile-
 
 Right now, the game features some silly and enjoyable elements, like an in-game computer that can run a classic game of Snake or a 3D renderer. However, some of the features I'm presenting here (maps, server UI, computer files, ...) are primarily for debugging purposes and are not meant to be included in the final version.
 
-![Desktop Screenshot 2023 02 13 - 16 00 37 15](https://user-images.githubusercontent.com/57646462/218573650-29d52667-5298-48fa-86c6-670c1e75b163.png)
+![Desktop Screenshot 2023 02 28 - 17 18 42 25](https://user-images.githubusercontent.com/57646462/221995092-ec317712-5492-4175-8e76-3bee3a9bae31.png)
+
+![Desktop Screenshot 2023 02 28 - 17 20 55 16](https://user-images.githubusercontent.com/57646462/221995115-457a4e55-70ca-4720-bed0-75c25d59ef30.png)
