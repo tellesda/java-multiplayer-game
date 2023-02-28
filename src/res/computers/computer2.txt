@@ -1,3 +1,1 @@
-t MARTIN.txt
-i martin.png
 s snake.exe
